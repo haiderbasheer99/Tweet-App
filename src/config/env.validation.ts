@@ -1,6 +1,7 @@
 import * as Joi from 'joi'
 
 export default Joi.object({
+    PORT: Joi.number().port().default(5000),
     NODE_ENV: Joi.string()
                  .valid('development','test','production')
                  .default('development'),
