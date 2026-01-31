@@ -12,6 +12,8 @@ This project showing how to create a simple Nestjs Tweet REST API . Every part o
 * Allow Authenticated Users to Create Tweet and Hashtags and other Operations
 * How to Apply Rate Limiting to your Project 
 * make a Dynamic ENV file to help you
+* create and run migrations for production phase
+* enable hot reloading script
 
 ## How to install this Tweet Project on your computer
 

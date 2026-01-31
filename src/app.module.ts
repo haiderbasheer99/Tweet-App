@@ -38,7 +38,7 @@ const ENV = process.env.NODE_ENV;
       load: [appConfig, databaseConfig],
       validationSchema: envVallidator,
     }),
-    // TypeOrmModule.forRootAsync({
+    // TypeOrmModule.forRootAsync({         uncomment from line 41 to 56 if you don't use migration
     //   imports: [ConfigModule],
     //   inject: [ConfigService],
     //   useFactory: (configService: ConfigService) => ({
@@ -54,7 +54,7 @@ const ENV = process.env.NODE_ENV;
     //     database: configService.get('database.name'),
     //   }),
     // }),
-    // TypeOrmModule.forRoot({
+    // TypeOrmModule.forRoot({       setting when you use migration with neon or any cloud database
     //   type: 'postgres',
     //   url: process.env.DATABASE_URL,
     //   autoLoadEntities: false,
@@ -65,6 +65,7 @@ const ENV = process.env.NODE_ENV;
     //   },
     // }),
     TypeOrmModule.forRoot({
+      // setting when using migration with local database
       type: 'postgres',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
