@@ -9,21 +9,31 @@ import { PaginationModule } from 'src/common/pagination/pagination.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { OtpModule } from 'src/otp/otp.module';
 import { EmailModule } from 'src/email/email.module';
-
+import { CloudinaryService } from 'src/cloudinary.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, CloudinaryService],
   exports: [UserService],
   imports: [
-    forwardRef(()=> ProfileModule),
-    TypeOrmModule.forFeature([User, Profile]), 
+    forwardRef(() => ProfileModule),
+    TypeOrmModule.forFeature([User, Profile]),
     ProfileModule,
     PaginationModule,
     OtpModule,
     EmailModule,
-    forwardRef(()=> AuthModule)]
+    forwardRef(() => AuthModule),
+    MulterModule.register({
+      storage: diskStorage({
+        // diskStorage give you more advanced handling
+        destination: './uploads', // the folder in project which saves images from cloudinary locally
+        filename: (req, file, cb) => {
+          cb(null, `${Date.now()}-${file.originalname}`);
+        },
+      }),
+    }),
+  ],
 })
-export class UserModule {
-
-}
+export class UserModule {}
