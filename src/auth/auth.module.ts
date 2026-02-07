@@ -10,22 +10,34 @@ import { JwtModule } from '@nestjs/jwt';
 import { OtpModule } from 'src/otp/otp.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService,{
+  providers: [
+    AuthService,
+    {
       provide: HashingProvider, //provide for main class
-      useClass: BcryptProvider  //for the child class
-    }
-   ],
+      useClass: BcryptProvider, //for the child class
+    },
+  ],
   exports: [AuthService, HashingProvider],
   imports: [
-            OtpModule,
-            forwardRef(()=> UserModule),
-            TypeOrmModule.forFeature([User]), 
-            ConfigModule.forFeature(AuthConfig),
-            JwtModule.registerAsync(AuthConfig.asProvider())
-  ]
+    OtpModule,
+    forwardRef(() => UserModule),
+    TypeOrmModule.forFeature([User]),
+    ConfigModule.forFeature(AuthConfig),
+    JwtModule.registerAsync(AuthConfig.asProvider()),
+    MulterModule.register({
+      storage: diskStorage({
+        // diskStorage give you more advanced handling
+        destination: './uploads', // the folder in project which saves images from cloudinary locally
+        filename: (req, file, cb) => {
+          cb(null, `${Date.now()}-${file.originalname}`);
+        },
+      }),
+    }),
+  ],
 })
 export class AuthModule {}
-
