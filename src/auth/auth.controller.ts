@@ -6,6 +6,8 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
@@ -14,6 +16,9 @@ import { AllowPublic } from './decorator/allow-public-decorator';
 import { RefreshTokenDto } from './dto/refresh-Token.dto';
 import { RequestTokenDto } from './dto/requestToken.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { File as MulterFile } from 'multer';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -32,13 +37,22 @@ export class AuthController {
 
   @AllowPublic()
   @Post('signup')
+  @UseInterceptors(FileInterceptor('profileImage'))
   @ApiOperation({ summary: 'Register New User' })
   @ApiResponse({
     status: 201,
     description:
       'it will return User Created successfully and OTP sent to your Email in the Response',
   })
-  async signUp(@Body() createUserDto: CreateUserDto) {
+  async signUp(
+    @Body() createUserDto: CreateUserDto,
+    @UploadedFile() file: MulterFile,
+  ) {
+    if (file) {
+      //if profileImage wasn't provided it will be undefined so i used nullish coalescing
+      createUserDto.profile = createUserDto.profile ?? {};
+      createUserDto.profile.profileImage = file.path;
+    }
     await this.authService.signup(createUserDto);
     return { message: 'User Created successfully and OTP sent to your Email' };
   }
