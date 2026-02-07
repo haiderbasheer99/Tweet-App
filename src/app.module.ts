@@ -25,6 +25,7 @@ import { Otp } from './otp/otp.entity';
 import { Hashtag } from './hashtag/hashtag.entity';
 import { Tweet } from './tweet/tweet.entity';
 import { User } from './user/user.entity';
+import { CloudinaryService } from './cloudinary.service';
 
 const ENV = process.env.NODE_ENV;
 
@@ -99,6 +100,7 @@ const ENV = process.env.NODE_ENV;
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    CloudinaryService,
   ],
 })
 export class AppModule {}
