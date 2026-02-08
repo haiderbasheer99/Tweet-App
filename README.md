@@ -1,8 +1,8 @@
 # Tweet REST API With JWT-Authentication Project
 
-## A Fully Functional nestjs Tweet Project showing how to create Tweets and Hashtags and send OTP VERIFICATION
+## Nestjs Tweet Project showing CRUD operation based on Tweets, Hashtags and Authentication based on OTP VERIFICATION. and using Cloudinary for Images.
 
-This project showing how to create a simple Nestjs Tweet REST API . Every part of this project is a sample code which show you how to do the following:
+This project showing how to create a simple Tweet REST API . Every part of this project is a sample code which show you how to do the following:
 
 * Create a custom web server with Nestjs using HTTP requests
 * Create a Tweet REST API using CRUD system
